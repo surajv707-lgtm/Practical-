@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Transaction Dashboard</title>
+
+<style>
+body{
+    font-family: Arial, sans-serif;
+    background:#f5f5f5;
+    padding:20px;
+}
+
+.container{
+    max-width:1000px;
+    margin:auto;
+}
+
+.card{
+    background:white;
+    padding:15px;
+    border-radius:10px;
+    margin-bottom:20px;
+    box-shadow:0 2px 10px rgba(0,0,0,0.1);
+}
+
+h1{
+    margin:0;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+th,td{
+    border:1px solid #ddd;
+    padding:10px;
+    text-align:left;
+}
+
+th{
+    background:#eee;
+}
+
+.total{
+    font-size:22px;
+    font-weight:bold;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="card">
+        <h1>UPI Transaction Dashboard</h1>
+    </div>
+
+    <div class="card">
+        <div class="total">
+            Total Spent: ₹<span id="totalAmount">0</span>
+        </div>
+    </div>
+
+    <div class="card">
+        <table>
+            <thead>
+                <tr>
+                    <th>Amount</th>
+                    <th>Bank</th>
+                    <th>Merchant</th>
+                    <th>Transaction ID</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+
+            <tbody id="tableBody">
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+<script>
+
+const transactions = [
+{
+amount:500,
+bank:"SBI",
+merchant:"Zomato",
+txn:"TXN12345",
+date:"30-05-2026"
+},
+{
+amount:250,
+bank:"Kotak",
+merchant:"Swiggy",
+txn:"TXN56789",
+date:"30-05-2026"
+}
+];
+
+let total = 0;
+const tableBody = document.getElementById("tableBody");
+
+transactions.forEach(item => {
+
+total += item.amount;
+
+tableBody.innerHTML += `
+<tr>
+<td>₹${item.amount}</td>
+<td>${item.bank}</td>
+<td>${item.merchant}</td>
+<td>${item.txn}</td>
+<td>${item.date}</td>
+</tr>
+`;
+
+});
+
+document.getElementById("totalAmount").innerText = total;
+
+</script>
+
+</body>
+</html>
