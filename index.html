@@ -1,92 +1,142 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Transaction Dashboard</title>
+<title>UPI Dashboard</title>
 
 <style>
-body{
-    font-family: Arial, sans-serif;
-    background:#f5f5f5;
-    padding:20px;
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
 }
 
-.container{
-    max-width:1000px;
-    margin:auto;
+body{
+background:#f1f5f9;
+padding:15px;
+}
+
+.header{
+background:#2563eb;
+color:white;
+padding:18px;
+border-radius:15px;
+text-align:center;
+margin-bottom:15px;
+}
+
+.cards{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:10px;
+margin-bottom:15px;
 }
 
 .card{
-    background:white;
-    padding:15px;
-    border-radius:10px;
-    margin-bottom:20px;
-    box-shadow:0 2px 10px rgba(0,0,0,0.1);
+background:white;
+padding:15px;
+border-radius:15px;
+box-shadow:0 2px 8px rgba(0,0,0,.1);
 }
 
-h1{
-    margin:0;
+.card h3{
+font-size:14px;
+color:#666;
+margin-bottom:8px;
+}
+
+.card p{
+font-size:22px;
+font-weight:bold;
+}
+
+.table-box{
+background:white;
+padding:15px;
+border-radius:15px;
+box-shadow:0 2px 8px rgba(0,0,0,.1);
+overflow-x:auto;
 }
 
 table{
-    width:100%;
-    border-collapse:collapse;
-}
-
-th,td{
-    border:1px solid #ddd;
-    padding:10px;
-    text-align:left;
+width:100%;
+border-collapse:collapse;
+min-width:600px;
 }
 
 th{
-    background:#eee;
+background:#2563eb;
+color:white;
+padding:12px;
 }
 
-.total{
-    font-size:22px;
-    font-weight:bold;
+td{
+padding:12px;
+border-bottom:1px solid #ddd;
 }
+
+tr:hover{
+background:#f8fafc;
+}
+
+@media(max-width:600px){
+
+.cards{
+grid-template-columns:1fr;
+}
+
+}
+
 </style>
 </head>
-
 <body>
 
-<div class="container">
+<div class="header">
+<h2>UPI Transaction Dashboard</h2>
+<p>Live Expense Tracker</p>
+</div>
 
-    <div class="card">
-        <h1>UPI Transaction Dashboard</h1>
-    </div>
+<div class="cards">
 
-    <div class="card">
-        <div class="total">
-            Total Spent: ₹<span id="totalAmount">0</span>
-        </div>
-    </div>
+<div class="card">
+<h3>Total Spent</h3>
+<p id="totalSpent">₹0</p>
+</div>
 
-    <div class="card">
-        <table>
-            <thead>
-                <tr>
-                    <th>Amount</th>
-                    <th>Bank</th>
-                    <th>Merchant</th>
-                    <th>Transaction ID</th>
-                    <th>Date</th>
-                </tr>
-            </thead>
+<div class="card">
+<h3>Total Transactions</h3>
+<p id="totalTxn">0</p>
+</div>
 
-            <tbody id="tableBody">
-            </tbody>
-        </table>
-    </div>
+</div>
+
+<div class="table-box">
+
+<table>
+
+<thead>
+<tr>
+<th>Amount</th>
+<th>Bank</th>
+<th>Merchant</th>
+<th>Txn ID</th>
+<th>Date</th>
+</tr>
+</thead>
+
+<tbody id="tbody"></tbody>
+
+</table>
 
 </div>
 
 <script>
 
 const transactions = [
+
 {
 amount:500,
 bank:"SBI",
@@ -94,6 +144,7 @@ merchant:"Zomato",
 txn:"TXN12345",
 date:"30-05-2026"
 },
+
 {
 amount:250,
 bank:"Kotak",
@@ -101,16 +152,18 @@ merchant:"Swiggy",
 txn:"TXN56789",
 date:"30-05-2026"
 }
+
 ];
 
-let total = 0;
-const tableBody = document.getElementById("tableBody");
+let total=0;
 
-transactions.forEach(item => {
+const tbody=document.getElementById("tbody");
+
+transactions.forEach(item=>{
 
 total += item.amount;
 
-tableBody.innerHTML += `
+tbody.innerHTML += `
 <tr>
 <td>₹${item.amount}</td>
 <td>${item.bank}</td>
@@ -122,7 +175,8 @@ tableBody.innerHTML += `
 
 });
 
-document.getElementById("totalAmount").innerText = total;
+document.getElementById("totalSpent").innerText="₹"+total;
+document.getElementById("totalTxn").innerText=transactions.length;
 
 </script>
 
