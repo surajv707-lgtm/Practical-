@@ -133,50 +133,62 @@ grid-template-columns:1fr;
 
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <script>
 
-const transactions = [
+const SUPABASE_URL = "https://bggiqwpjqbzwyvrjcpgt.supabase.co";
 
-{
-amount:500,
-bank:"SBI",
-merchant:"Zomato",
-txn:"TXN12345",
-date:"30-05-2026"
-},
+const SUPABASE_ANON_KEY =
+"YOUR_ANON_KEY_HERE";
 
-{
-amount:250,
-bank:"Kotak",
-merchant:"Swiggy",
-txn:"TXN56789",
-date:"30-05-2026"
+const supabase = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_ANON_KEY
+);
+
+async function loadTransactions() {
+
+  const tbody = document.getElementById("tbody");
+
+  tbody.innerHTML = "";
+
+  let total = 0;
+
+  const { data, error } = await supabase
+    .from("transactions")
+    .select("*");
+
+  if (error) {
+    console.log(error);
+    alert("Supabase connection error");
+    return;
+  }
+
+  data.forEach(item => {
+
+    total += Number(item.amount || 0);
+
+    tbody.innerHTML += `
+      <tr>
+        <td>₹${item.amount}</td>
+        <td>${item.bank}</td>
+        <td>${item.merchant}</td>
+        <td>${item.txn_id}</td>
+        <td>${item.date}</td>
+      </tr>
+    `;
+
+  });
+
+  document.getElementById("totalSpent").innerText =
+    "₹" + total;
+
+  document.getElementById("totalTxn").innerText =
+    data.length;
 }
 
-];
-
-let total=0;
-
-const tbody=document.getElementById("tbody");
-
-transactions.forEach(item=>{
-
-total += item.amount;
-
-tbody.innerHTML += `
-<tr>
-<td>₹${item.amount}</td>
-<td>${item.bank}</td>
-<td>${item.merchant}</td>
-<td>${item.txn}</td>
-<td>${item.date}</td>
-</tr>
-`;
-
-});
-
-document.getElementById("totalSpent").innerText="₹"+total;
-document.getElementById("totalTxn").innerText=transactions.length;
+loadTransactions();
 
 </script>
 
